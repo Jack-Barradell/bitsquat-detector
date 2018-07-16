@@ -1,0 +1,1 @@
+# bitsquat-detector
