@@ -47,19 +47,29 @@ def main():
             print("[!] Invalid option {} with value {}".format(o,a))
             sys.exit(1)
 
+    # Only want the url name first, so split the tld out
     split_url = target_url.split('.', 1)
 
     if len(split_url) == 1:
         usage()
         sys.exit(1)
 
+    # Converting the url to a list of binary numbers representing the letters
     binary_list = string_to_binary_list(split_url[0])
 
     print("[+] Generating bitsquat domains")
 
     binary_results = []
+
+    # Loop over each letter checking to see if by changing one bit, another valid
+    # url character is generated
     for i,byte in enumerate(binary_list):
-        replacements = check_byte(byte)
+        if i == 0 or i == (len(binary_list) - 1):
+            start_end = True
+        else:
+            start_end: False
+
+        replacements = check_byte(byte, start_end)
         for replacement in replacements:
             test_list = binary_list.copy()
             test_list[i] = replacement
@@ -91,17 +101,24 @@ def main():
     print("[+] Completed. Total domains found: {}".format(len(binary_results)))
 
 
-def check_byte(byte):
+def check_byte(byte, start_end):
     result_letters = []
     bit_list = list(byte)
     for i,bit in enumerate(bit_list):
         test_byte = bit_list.copy()
+        
         if bit =='1':
             test_byte[i] = '0'
         else:
             test_byte[i] = '1'
         char_check = binary_to_string(''.join(test_byte))
-        if re.match(r'[a-zA-Z0-9]', char_check):
+
+        if start_end:
+            regex = r'[a-zA-Z0-9]'
+        else:
+            regex = r'[a-zA-Z0-9\-\_]'
+
+        if re.match(regex, char_check):
             original_char = binary_to_string(str(byte))
             if not original_char.lower() == char_check.lower():
                 result_letters.append(''.join(test_byte))
