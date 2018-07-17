@@ -1,6 +1,6 @@
 # Bitsquat Detector 
 
-A tool to generate a list of domains which bitsquat a given domain. For further information on bitsquatting I recommend reading (http://dinaburg.org/bitsquatting.html)[http://dinaburg.org/bitsquatting.html]
+A tool to generate a list of domains which bitsquat a given domain. For further information on bitsquatting I recommend reading http://dinaburg.org/bitsquatting.html
 
 # Installation 
 
