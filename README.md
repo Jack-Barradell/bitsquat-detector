@@ -10,11 +10,11 @@ To install simply clone this repo
 
     git clone https://github.com/Jack-Barradell/bitsquat-detector
 
-Then setup the primary dependancy of pythonwhois
+Then setup the primary dependency of pythonwhois
 
     pip install pythonwhois
 
-Simple, Thats it!
+Simple, That's it!
 
 # Usage
 
@@ -88,3 +88,10 @@ Simple, Thats it!
     <OUTPUT SNIPPED>
     [+] Completed. Total domains found: 43
 
+## Errors 
+
+When using the -c option, you may encounter the following error 
+
+    [!] Hit whois rate limit, continuing without whois
+
+This occurs when too many requests have been made to check domain availability and will disable domain availability checking for the remainder of the session.
