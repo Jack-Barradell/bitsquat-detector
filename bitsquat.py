@@ -5,6 +5,8 @@ import time
 import getopt
 
 WHOIS_SLEEP = 5
+RATE_LIMIT_STRING = ("['clientDeleteProhibited https://icann.org/epp#clientDeleteProhibited', 'clientRenewProhibited https://icann.org/epp#clientRenewProhibited', "
+                    + "'clientTransferProhibited https://icann.org/epp#clientTransferProhibited', 'clientUpdateProhibited https://icann.org/epp#clientUpdateProhibited']")
 
 def usage():
     print("Bitsquat Detector")
@@ -16,6 +18,7 @@ def usage():
     print("{} - Target url to check".format("\t-u --url".ljust(20, " ")))
     print("{} - Check if domain is registered. NOTE: To prevent rate limiting this slows the program down heavily".format("\t-c --check".ljust(20, " ")))
     print("{} - Show this help message".format("\t-h --help".ljust(20, " ")))
+    print()
     print("Examples: bitsquat.py fake-domain.com")
     print()
 
@@ -91,9 +94,11 @@ def main():
 
             whois = pythonwhois.get_whois(url)
 
-            print("Whois status {}".format(whois.get('status')))
+            if whois.get('status') and RATE_LIMIT_STRING in whois.get('status'):
+                print("[!] Hit whois rate limit, continuing without whois")
+                whois_check = False
 
-            if whois.get('status'):
+            if whois.get('status') and whois_check:
                 print("\t[-] Not available")
             else:
                 print("\t[+] Available")
