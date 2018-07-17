@@ -88,6 +88,8 @@ def main():
 
             print("\t[+] Waiting {} seconds until next check".format(WHOIS_SLEEP))
 
+    print("[+] Completed. Total domains found: {}".format(len(binary_results)))
+
 
 def check_byte(byte):
     result_letters = []
