@@ -95,3 +95,7 @@ When using the -c option, you may encounter the following error
     [!] Hit whois rate limit, continuing without whois
 
 This occurs when too many requests have been made to check domain availability and will disable domain availability checking for the remainder of the session.
+
+# Disclaimer 
+
+All code and tools are provided for educational purposes and I can accept no responsibilty for misuse. 
