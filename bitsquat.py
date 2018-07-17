@@ -1,28 +1,56 @@
 import re
 import sys
+import pythonwhois
+import getopt
 
 def usage():
     print("Bitsquat Detector")
     print()
-    print("Usage: bitsquat.py <url>")
+    print("Usage: bitsquat.py -u <url>")
     print("The url prefix is not needed. E.g for www.google.com, only provide \"google.com\"")
-    print("E.g: bitsquat.py fake-domain.com")
+    print()
+    print("Flags:")
+    print("{} - Target url to check".format("\t-u --url".ljust(20, " ")))
+    print("{} - Check if domain is registered".format("\t-c --check".ljust(20, " ")))
+    print("{} - Show this help message".format("\t-h --help".ljust(20, " ")))
+    print("Examples: bitsquat.py fake-domain.com")
     print()
 
 
 def main():
-    if len(sys.argv) != 2:
+    if len(sys.argv) == 1:
         usage()
         sys.exit(1)
 
-    split_url = sys.argv[1].split('.', 1)
+    whois_check = False
+    target_url = ''
+
+    try:
+        opts,args = getopt.getopt(sys.argv[1:],"u:ch",["url","check","help"])
+    except getopt.GetoptError as e:
+        print(str(e))
+        usage()
+        sys.exit(1)
+
+    for o,a in opts:
+        if o in ("-u", "--url"):
+            target_url = a
+        elif o in ("-c", "--check"):
+            whois_check = target_url
+        elif o in ("-h", "--help"):
+            usage()
+            sys.exit(0)
+        else:
+            print("[!] Invalid option {} with value {}".format(o,a))
+            sys.exit(1)
+
+    split_url = target_url.split('.', 1)
 
     if len(split_url) == 1:
         usage()
         sys.exit(1)
 
     binary_list = string_to_binary_list(split_url[0])
-
 
     binary_results = []
     for i,byte in enumerate(binary_list):
@@ -64,6 +92,7 @@ def binary_list_to_string(binary_list):
 
 def binary_to_string(binary):
     return str(chr(int(binary, 2)))
+
 
 if __name__ == '__main__':
     main()
