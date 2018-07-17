@@ -13,5 +13,10 @@ def main():
     pass
 
 
+def string_to_binary_list(string):
+    return [format(ord(x), 'b') for x in string]
+
+
 if __name__ == '__main__':
     main()
+
