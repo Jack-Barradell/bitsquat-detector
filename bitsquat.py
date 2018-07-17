@@ -1,7 +1,10 @@
 import re
 import sys
 import pythonwhois
+import time
 import getopt
+
+WHOIS_SLEEP = 5
 
 def usage():
     print("Bitsquat Detector")
@@ -11,7 +14,7 @@ def usage():
     print()
     print("Flags:")
     print("{} - Target url to check".format("\t-u --url".ljust(20, " ")))
-    print("{} - Check if domain is registered".format("\t-c --check".ljust(20, " ")))
+    print("{} - Check if domain is registered. NOTE: To prevent rate limiting this slows the program down heavily".format("\t-c --check".ljust(20, " ")))
     print("{} - Show this help message".format("\t-h --help".ljust(20, " ")))
     print("Examples: bitsquat.py fake-domain.com")
     print()
@@ -52,6 +55,8 @@ def main():
 
     binary_list = string_to_binary_list(split_url[0])
 
+    print("[+] Generating bitsquat domains")
+
     binary_results = []
     for i,byte in enumerate(binary_list):
         replacements = check_byte(byte)
@@ -60,9 +65,28 @@ def main():
             test_list[i] = replacement
             binary_results.append(test_list)
 
+    print("[+] Finished generating bitsquat domains")
+
     for binary_result in binary_results:
         binary_result_string = binary_list_to_string(binary_result)
-        print("{}.{}".format(binary_result_string,split_url[1]))
+
+        url = "{}.{}".format(binary_result_string,split_url[1])
+
+        print("[+] Found {}".format(url))
+
+        if whois_check:
+            print("\t[+] Checking if registered")
+
+            whois = pythonwhois.get_whois(url)
+
+            print("Whois status {}".format(whois.get('status')))
+
+            if whois.get('status'):
+                print("\t[-] Not available")
+            else:
+                print("\t[+] Available")
+
+            print("\t[+] Waiting {} seconds until next check".format(WHOIS_SLEEP))
 
 
 def check_byte(byte):
