@@ -64,6 +64,8 @@ def main():
     # Loop over each letter checking to see if by changing one bit, another valid
     # url character is generated
     for i,byte in enumerate(binary_list):
+
+        # Check if the byte is the first or last in a url
         if i == 0 or i == (len(binary_list) - 1):
             start_end = True
         else:
@@ -98,21 +100,29 @@ def main():
 
             print("\t[+] Waiting {} seconds until next check".format(WHOIS_SLEEP))
 
+            # Delay to prevent rate limiting 
+            time.sleep(WHOIS_SLEEP)
+
     print("[+] Completed. Total domains found: {}".format(len(binary_results)))
 
 
+# Given a byte of binary data, check to see if by changing any single bit,
+# another valid url character is generated
 def check_byte(byte, start_end):
     result_letters = []
     bit_list = list(byte)
     for i,bit in enumerate(bit_list):
         test_byte = bit_list.copy()
-        
+
         if bit =='1':
             test_byte[i] = '0'
         else:
             test_byte[i] = '1'
+
         char_check = binary_to_string(''.join(test_byte))
 
+        # If the byte is the first or last then exclude characters which
+        # can't be in those positions
         if start_end:
             regex = r'[a-zA-Z0-9]'
         else:
