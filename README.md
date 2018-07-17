@@ -34,7 +34,7 @@ Simple, That's it!
 
 ### Just generate domains 
 
-    python bitsquat.py -u bbc.co.uk 
+    > python bitsquat.py -u bbc.co.uk 
     [+] Generating bitsquat domains
     [+] Finished generating bitsquat domains
     [+] Found rbc.co.uk
@@ -54,7 +54,7 @@ Simple, That's it!
 
 ### Generate domains and check them
 
-    python .\bitsquat.py -u microsoft.com -c
+    > python .\bitsquat.py -u microsoft.com -c
     [+] Generating bitsquat domains
     [+] Finished generating bitsquat domains
     [+] Found eicrosoft.com
