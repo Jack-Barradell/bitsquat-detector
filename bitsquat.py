@@ -29,7 +29,10 @@ def main():
         sys.exit(1)
 
     whois_check = False
+    whois_rate_limit = False
     target_url = ''
+    available_found = 0
+    not_available_found = 0
 
     try:
         opts,args = getopt.getopt(sys.argv[1:],"u:ch",["url","check","help"])
@@ -89,19 +92,21 @@ def main():
 
         print("[+] Found {}".format(url))
 
-        if whois_check:
+        if whois_check and not whois_rate_limit:
             print("\t[+] Checking if registered")
 
             whois = pythonwhois.get_whois(url)
 
             if whois.get('status') and RATE_LIMIT_STRING in whois.get('status'):
                 print("[!] Hit whois rate limit, continuing without whois")
-                whois_check = False
+                whois_rate_limit = True
 
-            if whois.get('status') and whois_check:
+            if whois.get('status') and not whois_rate_limit:
                 print("\t[-] Not available")
+                not_available_found += 1
             else:
                 print("\t[+] Available")
+                available_found += 1
 
             print("\t[+] Waiting {} seconds until next check".format(WHOIS_SLEEP))
 
@@ -109,6 +114,9 @@ def main():
             time.sleep(WHOIS_SLEEP)
 
     print("[+] Completed. Total domains found: {}".format(len(binary_results)))
+    if whois_check:
+        print("[+] Total available domains: {}".format(available_found))
+        print("[+] Total not available domains: {}".format(not_available_found))
 
 
 # Given a byte of binary data, check to see if by changing any single bit,
