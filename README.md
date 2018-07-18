@@ -2,7 +2,7 @@
 
 A tool to generate a list of domains which bitsquat a given domain. For further information on bitsquatting I recommend reading http://dinaburg.org/bitsquatting.html
 
-A blog post about the development of this tool can be found at https://blog.barradell-johns.com/?p=124&preview=true
+A blog post about the development of this tool can be found at [https://blog.barradell-johns.com/?p=124](https://blog.barradell-johns.com/?p=124)
 
 # Installation 
 
