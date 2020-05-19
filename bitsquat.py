@@ -75,7 +75,7 @@ def main():
         if i == 0 or i == (len(binary_list) - 1):
             start_end = True
         else:
-            start_end: False
+            start_end = False
 
         replacements = check_byte(byte, start_end)
         for replacement in replacements:
